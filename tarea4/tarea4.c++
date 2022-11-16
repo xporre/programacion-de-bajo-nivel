@@ -10,7 +10,6 @@ class Vehiculo{
     int largoCM;
     int peso_kg;
     enum Tipo {auto,camion,bus,ambulancia};
-
     Vehiculo();
     Vehiculo(string a,int b,int c,Tipo tipo){
         marca = a;
