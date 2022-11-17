@@ -3,19 +3,21 @@
 #include <iterator>
 
 using namespace std;
+enum Tipo {Auto,Camion,Bus,Ambulancia};
 
 class Vehiculo{
+    
     public: 
     string marca;
     int largoCM;
     int peso_kg;
-    enum Tipo {auto,camion,bus,ambulancia};
-    Vehiculo();
+    Tipo ti;
+    Vehiculo(){}
     Vehiculo(string a,int b,int c,Tipo tipo){
         marca = a;
         largoCM = b;
         peso_kg = c;
-        Tipo=tipo;
+        ti = tipo;
     }
 
     int getLargoCM(){
@@ -23,6 +25,9 @@ class Vehiculo{
     }
     int getPeso(){ 
         return peso_kg;
+    }
+    Tipo getTipo(){
+        return ti;
     }
     
 };
@@ -37,11 +42,7 @@ class Transbordador{
         int capacidad_de_cargar;
         int cantidad_filas;
         int largo_fila;
-        list<Vehiculo> f0;
-        list<Vehiculo> f1;
-        list<Vehiculo> f2;
-        list<Vehiculo> f3;
-        list<Vehiculo> f4;
+        list<Vehiculo> filas[5];
 
 
         Transbordador(){}
@@ -54,157 +55,52 @@ class Transbordador{
         }
 
         void popVehiculo(int fila){
-            switch(fila){
-                case 0:
-                    f0.pop_front();
-                break;
-                case 1: 
-                    f1.pop_front();
-                break;
-                case 2:
-                    f2.pop_front(); 
-                break;
-                case 3:
-                    f3.pop_front(); 
-                break;
-                case 4:
-                    f4.pop_front(); 
-                break;
-                
-            }
-            
+            filas[fila].pop_front();            
         }
-
         int getLargoFila(int fila) {
-             switch(fila){
-                case 0:
-                    return f0.size();
-                break;
-                case 1: 
-                    return f1.size();
-                break;
-                case 2:
-                    return f2.size(); 
-                break;
-                case 3:
-                    return f3.size(); 
-                break;
-                case 4:
-                    return f4.size(); 
-                break;
-                
-            }
+            return filas[fila].size();
         }
         int getEspacioLibre(int fila){
-            
-            switch(fila){
-                int t;
-                case 0:
+            int t=0;
                     if(getLargoFila(fila)==0){
                         return largo_fila;
                     }else{
-                        for(list<Vehiculo>::iterator it=f0.begin();it!=f0.end();it++){
+                for(list<Vehiculo>::iterator it=filas[fila].begin();it!=filas[fila].end();it++){
                             t += it->getLargoCM();
                         }
                         int libre =largo_fila - t+15*getLargoFila(fila);
                         return libre;
                     }
-                break;
-                case 1:
-                    if(getLargoFila(fila)==0){
-                        return largo_fila;
-                    }else{
-                        for(list<Vehiculo>::iterator it=f1.begin();it!=f1.end();it++){
-                            t += it->getLargoCM();
-                        }
-                        int libre =largo_fila - t+15*getLargoFila(fila);
-                        return libre;
-                    }
-                break;
-                case 2:
-                    if(getLargoFila(fila)==0){
-                        return largo_fila;
-                    }else{
-                        for(list<Vehiculo>::iterator it=f2.begin();it!=f2.end();it++){
-                            t += it->getLargoCM();
-                        }
-                        int libre =largo_fila - t+15*getLargoFila(fila);
-                        return libre;
-                    }
-                break;
-                case 3:
-                    if(getLargoFila(fila)==0){
-                        return largo_fila;
-                    }else{
-                        for(list<Vehiculo>::iterator it=f3.begin();it!=f3.end();it++){
-                            t += it->getLargoCM();
-                        }
-                        int libre =largo_fila - t+15*getLargoFila(fila);
-                        return libre;
-                    }
-                break;
-                case 4:
-                    if(getLargoFila(fila)==0){
-                        return largo_fila;
-                    }else{
-                        for(list<Vehiculo>::iterator it=f4.begin();it!=f4.end();it++){
-                            t += it->getLargoCM();
-                        }
-                        int libre =largo_fila - t+15*getLargoFila(fila);
-                        return libre;
-                    }
-                break;
-            }
 
         }
         int getPesoLibre(){
-            int token = 0;
             int t = 0 ;
-                for(list<Vehiculo>::iterator it=f0.begin();it!=f0.end();it++){
+            for(int i=0;i<cantidad_filas;i++){
+                for(list<Vehiculo>::iterator it=filas[i].begin();it!=filas[i].end();it++){
                     t += it->getPeso();
                 }
-                for(list<Vehiculo>::iterator it=f1.begin();it!=f1.end();it++){
-                    t += it->getPeso();
-                }
-                for(list<Vehiculo>::iterator it=f2.begin();it!=f2.end();it++){
-                    t += it->getPeso();
-                }
-                for(list<Vehiculo>::iterator it=f3.begin();it!=f3.end();it++){
-                    t += it->getPeso();
-                }
-                for(list<Vehiculo>::iterator it=f4.begin();it!=f4.end();it++){
-                    t += it->getPeso();
                 }
 
             return capacidad_de_cargar - t;
 
         }
+        bool getTipo(Tipo a){
+            for(int i=0;i<cantidad_filas;i++){
+                for(list<Vehiculo>::iterator it=filas[i].begin();it!=filas[i].end();it++){
+                    if(it->getTipo()==a){
+                        return true;
+                    }else{return false;}
+                }
+            }
+        }
 
         bool pushVehiculo(int fila , Vehiculo v){
-
-             switch(fila){
-                case 0:
-                if(getEspacioLibre(fila)>v.getLargoCM() && getPesoLibre()>v.getPeso()){f0.push_back(v); return true;}
-                else{return false;}                 
-                break;
-                case 1: 
-                   if(getEspacioLibre(fila)>v.getLargoCM() && getPesoLibre()>v.getPeso()){f1.push_back(v); return true;}
-                   else{return false;}
-                break;
-                case 2:
-                    if(getEspacioLibre(fila)>v.getLargoCM() && getPesoLibre()>v.getPeso()){f2.push_back(v); return true;}
-                    else{return false;} 
-                break;
-                case 3:
-                    if(getEspacioLibre(fila)>v.getLargoCM() && getPesoLibre()>v.getPeso()){f3.push_back(v); return true;}
-                    else{return false;} 
-                break;
-                case 4:
-                    if(getEspacioLibre(fila)>v.getLargoCM() && getPesoLibre()>v.getPeso()){f4.push_back(v); return true;}
-                    else{return false;} 
-                break;
-                
+            
+            if(getEspacioLibre(fila)>v.getLargoCM() && getPesoLibre()>v.getPeso()){
+                filas[fila].push_back(v); 
+                return true;
             }
+            else{return false;}                                 
 
         }        
 
@@ -214,11 +110,12 @@ class Transbordador{
 
 int main(){
     //class vehiculo lista
-    Vehiculo v1("onda",10,100,auto);
+    Vehiculo v1("onda",10,100,Auto);
 
-    Transbordador t1("t1","t2",1000,10,10000),t2;
+    Transbordador t1("Antares", "Quellón", 100000, 3, 50000);
 
-    cout <<"largo "<<v1.getLargoCM()<<" y peso "<<v1.getPeso()<<endl;
+    cout <<"largo "<<v1.getLargoCM()<<" y peso "<<v1.getPeso()<<"y tipo "<<v1.getTipo()<<endl;
+    cout <<"largofila "<<t1.getLargoFila(1)<<"| CARGA "<<t1.getPesoLibre()<<" y espacio "<<t1.getEspacioLibre(1)<<endl;
 
     list<Vehiculo> l1;
     l1.push_back(v1);
@@ -227,7 +124,7 @@ int main(){
     l1.push_back(v1);
     l1.push_back(v1);
 
-    int token;
+    int token=0;
 
     for(list<Vehiculo>::iterator it=l1.begin();it!=l1.end();it++){
         token += it->getLargoCM();
@@ -235,8 +132,19 @@ int main(){
 
     cout<<token<<endl;
 
+    list<Vehiculo> l2[5];
 
+    l2[0].push_back(v1);
+    l2[0].push_back(v1);
+    l2[4].push_back(v1);
+    l2[3].push_back(v1);
+    l2[2].push_back(v1);
+    l2[1].push_back(v1);
 
+    for (int i = 0; i <5 ; i++){
+        cout <<l2[i].front().getTipo() <<l2[i].size() <<endl;
+    }
+    
     return 0;
 
 }
