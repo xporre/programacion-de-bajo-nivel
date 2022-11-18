@@ -9,28 +9,31 @@ LIBRERIA = tarea4.so
 WRAP = tarea4_wrap.cxx
 
 $(EXE): tarea4.o
-	$(COMP) $(FLAGS) tarea4.o -o $(EXE) -Wl.-rpath=/usr/lib.-L/usr/lib -l tarea4
+	$(COMP) tarea4.o -o $(EXE) 
 	
 # Regla comodín para compilar librerías
 
 # Se agrega el -fPIC
+%.o: %.cpp %.h
+	$(COMP) $(FLAGS) -fPIC -o  $@ $< -c
 
 # Regla para crear librería compartida (.so)
-$(lib):tarea4_wrap.cxx tarea4.o
-	sudo $(cc) -fPIC -c tarea4_wrap.cxx -o tarea4_wrap.o -I$(rutaPython)/include
-	$(cc) -shared tarea4_wrap.o tarea4.o -o $(lib) -L$(rutaPython) -lpython39
+
+lib: $(BLOQUES)
+	$(COMP) -shared $^ -o $(LIBRERIA)
+	sudo mv $(LIBRERIA) /usr/lib
 
 tarea4.o: tarea4.h tarea4.c++
-	$(CC) -fPIC -c tarea4.c++ -o tarea4.o
+	$(CC) -Wall -fPIC -c tarea4.c++ -o tarea4.o
 
 # Regla para wraper
 wrap: tarea4.i tarea4.h
-	swig -python -c++ tarea4.i
+	swig -c++ -python  tarea4.i
 
 # Regla para crear librería desde el wraper
 tarea4.so: $(WRAP) $(BLOQUES)
-	$(COMP) $(FLAGS) -fPIC -c $(WRAP) -o lib_wrap.o -I$(rutaPython)
-	$(COMP) -shared lib_wrap.o tarea4.o  -o tarea4.so
+	$(COMP) $(FLAGS) -fPIC -c $(WRAP) -o tarea4.o -I$(rutaPython)
+	$(COMP) -shared tarea4.o  -o tarea4.so
 	
 clean:
 	rm -f *.o

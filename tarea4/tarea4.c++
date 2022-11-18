@@ -91,8 +91,8 @@ class Transbordador{
                         return true;
                     }else{return false;}
                 }
-            }
-        }
+            } return false;
+       }
 
         bool pushVehiculo(int fila , Vehiculo v){
             if(getTipo(Camion)){

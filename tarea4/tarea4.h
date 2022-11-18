@@ -1,6 +1,5 @@
 using namespace std;
 
-enum Tipo;
 
 class vehiculo{
     public: 
@@ -15,7 +14,7 @@ class vehiculo{
 class Transbordador{
     public:
         Transbordador();
-        Transbordador(string a, string b, int c, int d, int e,);
+        Transbordador(string a, string b, int c, int d, int e);
         void popVehiculo();
         int getLargoFila();
         int getPesoLibre();

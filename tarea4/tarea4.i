@@ -1,7 +1,6 @@
-%module Personas
-
+%module tarea4
 %{
-#include"persona.h"
+#include"tarea4.h"
 %}
 
-%include"persona.h"
+%include"tarea4.h"
