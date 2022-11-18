@@ -1,5 +1,5 @@
 CC = g++
-rutaPython = /usr/share/file/magic/python
+rutaPython = /Users/xavierporre/opt/anaconda3/bin/python
 rutaSwig = /Users/xavierporre/swig/
 EXE = oop
 COMP = g++
@@ -9,16 +9,16 @@ LIBRERIA = tarea4.so
 WRAP = tarea4_wrap.cxx
 
 $(EXE): tarea4.o
-	$(COMP) $(FLAGS) tarea4.o -o $(EXE) -Wl
+	$(COMP) $(FLAGS) tarea4.o -o $(EXE) -Wl.-rpath=/usr/lib.-L/usr/lib -l tarea4
 	
 # Regla comodín para compilar librerías
 
 # Se agrega el -fPIC
 
 # Regla para crear librería compartida (.so)
-$(lib):persona_wrap.cxx persona.o
-	sudo $(cc) -fPIC -c persona_wrap.cxx -o persona_wrap.o -I$(rutaPython)/include
-	$(cc) -shared persona_wrap.o persona.o -o $(lib) -L$(rutaPython) -lpython39
+$(lib):tarea4_wrap.cxx tarea4.o
+	sudo $(cc) -fPIC -c tarea4_wrap.cxx -o tarea4_wrap.o -I$(rutaPython)/include
+	$(cc) -shared tarea4_wrap.o tarea4.o -o $(lib) -L$(rutaPython) -lpython39
 
 tarea4.o: tarea4.h tarea4.c++
 	$(CC) -fPIC -c tarea4.c++ -o tarea4.o
