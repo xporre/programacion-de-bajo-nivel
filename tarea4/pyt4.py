@@ -1,14 +1,14 @@
-
+# coding=utf-8
 from enum import Enum
 from tarea4 import Transbordador, Vehiculo
 # ENUM para el tipo de vehículo
-tipo= Enum('tipo', ["auto", "camión", "bus", "ambulancia"])
+tipo= Enum('tipo', ["auto", "camion", "bus", "ambulancia"])
 # Creación de un transbordador
 t1=Transbordador("Antares", "Quellón", 100000, 3, 50000)
 # Cargar algunos vehículos
 t1.pushVehiculo(1, Vehiculo("Mazda 3", 3000, 2500, tipo.auto))
 t1.pushVehiculo(1, Vehiculo("Toyota Yaris", 2800, 2000, tipo.auto))
-t1.pushVehiculo(2, Vehiculo("Tatra Phoenix", 9010, 8500, tipo.camión))
+t1.pushVehiculo(2, Vehiculo("Tatra Phoenix", 9010, 8500, tipo.camion))
 t1.pushVehiculo(2, Vehiculo("Skania k400", 9500, 7000, tipo.bus))
 t1.pushVehiculo(3, Vehiculo("Honda CRV", 3100, 2200, tipo.auto))
 t1.pushVehiculo(3, Vehiculo("Nissan Sentra", 3300, 2700, tipo.auto))

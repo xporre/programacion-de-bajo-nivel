@@ -1,6 +1,6 @@
 CC = g++
-rutaPython = /Users/xavierporre/opt/anaconda3/bin/python
-rutaSwig = /Users/xavierporre/swig/
+rutaPython = /usr/bin/python3
+rutaSwig = /usr/bin/swig/
 EXE = oop
 COMP = g++
 FLAGS = 
